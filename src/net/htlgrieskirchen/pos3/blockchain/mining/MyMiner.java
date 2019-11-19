@@ -65,7 +65,33 @@ public class MyMiner extends Miner {
          * Parallelisierung einsetzt.
          */
 
+        Block root = BLOCKCHAIN.get(0);
+        for (int i = 0; i < numberOfCoins; ++i)
+        {
+            System.out.println("" + i);
+            //MiningBlock mb = new MiningBlock(root);
+            List<Thready> threadList = new ArrayList<>();
+            ExecutorService es = Executors.newFixedThreadPool(numberOfThreads);
+            for(int j = 0; j < numberOfThreads; ++j)
+            {
+                Thready t = new Thready(i, numberOfThreads);
+                t.setBlock(new MiningBlock(root));
+                threadList.add(t);
+            }
+            try
+            {
+                root = es.invokeAny(threadList);
+                BLOCKCHAIN.add(root);
+            }
+            catch (InterruptedException | ExecutionException e)
+            {
+                e.printStackTrace();
+            }
 
+            es.shutdown();
+            long temp = System.currentTimeMillis();
+            System.out.println(DF.format(1000.0 * i / (temp - start)) + " coins/s");
+        }
 
 
         /**
