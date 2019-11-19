@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
 
 public class MyMiner extends Miner {
 
-    private final static int numberOfThreads = 4;
+    private final static int numberOfThreads = 10;
     private final static int numberOfCoins = 100;
     public static void main(String[] args)
     {
@@ -66,12 +66,10 @@ public class MyMiner extends Miner {
          */
 
         Block root = BLOCKCHAIN.get(0);
+        ExecutorService es = Executors.newFixedThreadPool(numberOfThreads);
         for (int i = 0; i < numberOfCoins; ++i)
         {
-            System.out.println("" + i);
-            //MiningBlock mb = new MiningBlock(root);
             List<Thready> threadList = new ArrayList<>();
-            ExecutorService es = Executors.newFixedThreadPool(numberOfThreads);
             for(int j = 0; j < numberOfThreads; ++j)
             {
                 Thready t = new Thready(i, numberOfThreads);
@@ -88,7 +86,6 @@ public class MyMiner extends Miner {
                 e.printStackTrace();
             }
 
-            es.shutdown();
             long temp = System.currentTimeMillis();
             System.out.println(DF.format(1000.0 * i / (temp - start)) + " coins/s");
         }
