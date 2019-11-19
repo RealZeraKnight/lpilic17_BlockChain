@@ -18,9 +18,32 @@ public class Thready implements Callable<MiningBlock>
         this.abstand = abstand;
     }
 
-
     @Override
-    public MiningBlock call() throws Exception {
-        return null;
+    public MiningBlock call()
+    {
+        for(int i = von; i < Integer.MAX_VALUE; i += abstand)
+        {
+            if(block.mine(i))
+            {
+                foundBlock = block;
+                break;
+            }
+        }
+        return foundBlock;
+    }
+
+    public void setBlock(MiningBlock block)
+    {
+        this.block = block;
+    }
+
+    public MiningBlock getBlock()
+    {
+        return block;
+    }
+
+    public MiningBlock getMinedBlock()
+    {
+        return foundBlock;
     }
 }
