@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
 
 public class MyMiner extends Miner {
 
-    private final static int numberOfThreads = 10;
+    private final static int numberOfThreads = 4;
     private final static int numberOfCoins = 100;
     public static void main(String[] args)
     {
@@ -72,7 +72,7 @@ public class MyMiner extends Miner {
             List<Thready> threadList = new ArrayList<>();
             for(int j = 0; j < numberOfThreads; ++j)
             {
-                Thready t = new Thready(i, numberOfThreads);
+                Thready t = new Thready(j, numberOfThreads);
                 t.setBlock(new MiningBlock(root));
                 threadList.add(t);
             }
